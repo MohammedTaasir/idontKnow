@@ -61,13 +61,19 @@ int main() {
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
 
     // Create shared context between OpenGL and OpenCL
+    /*
     cl_context_properties props[] = {
         CL_GL_CONTEXT_KHR, (cl_context_properties)glfwGetWGLContext(window),
         CL_WGL_HDC_KHR, (cl_context_properties)GetDC((HWND)glfwGetWin32Window(window)),
         CL_CONTEXT_PLATFORM, (cl_context_properties)platform,
         0
     };
+    
     context = clCreateContext(props, 1, &device, NULL, NULL, NULL);
+    */
+
+
+    
     queue = clCreateCommandQueue(context, device, 0, NULL);
 
     program = clCreateProgramWithSource(context, 1, (const char**)&kernelSource, NULL, NULL);
