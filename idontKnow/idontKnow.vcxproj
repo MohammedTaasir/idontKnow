@@ -74,15 +74,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC; WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\include; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\include; </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\Practice\clgltaasir\Dependencies\GLEW\include; C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\include; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\include; </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\lib-vc2022; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\lib; </AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib; opencl.lib; opengl32.lib; user32.lib; gdi32.lib; shell32.lib; $(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\Practice\clgltaasir\Dependencies\GLEW\lib\Release\Win32; C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\lib-vc2022; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\lib; </AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib; glfw3.lib; opencl.lib; opengl32.lib; user32.lib; gdi32.lib; shell32.lib; $(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -91,17 +91,17 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GLEW_STATIC; WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\include; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\include; </AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>F:\Practice\clgltaasir\Dependencies\GLEW\include; C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\include; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\include; </AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\lib-vc2022; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\lib; </AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib; opencl.lib; opengl32.lib; user32.lib; gdi32.lib; shell32.lib; $(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>F:\Practice\clgltaasir\Dependencies\GLEW\lib\Release\Win32; C:\OneDrive\Desktop\glfw-3.3.9.bin.WIN32\glfw-3.3.9.bin.WIN32\lib-vc2022; C:\OneDrive\Desktop\OpenCL-SDK-v2023.12.14-Win-x86\OpenCL-SDK-v2023.12.14-Win-x86\lib; </AdditionalLibraryDirectories>
+      <AdditionalDependencies>glew32s.lib; glfw3.lib; opencl.lib; opengl32.lib; user32.lib; gdi32.lib; shell32.lib; $(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
