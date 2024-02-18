@@ -1,24 +1,23 @@
 #define CL_USE_DEPRECATED_OPENCL_1_2_APIS
-#include <Windows.h>
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 #include <CL/cl.h>
-#include <CL/cl_gl.h>   
+#include <CL/cl_gl.h>
 
 // Window dimensions
 const GLuint WIDTH = 800, HEIGHT = 600;
 
 // OpenCL kernel source code
 const char* kernelSource =
-"__kernel void generateRandomTexture(__write_only image2d_t texture) { \n"
+"__kernel void generateColors(__write_only image2d_t texture) { \n"
 "    const int2 pos = {get_global_id(0), get_global_id(1)}; \n"
-"    uint4 pixel; \n"
-"    pixel.x = pos.x * 255 / 800; \n" // Red component based on X position
-"    pixel.y = pos.y * 255 / 600; \n" // Green component based on Y position
-"    pixel.z = (pos.x + pos.y) * 255 / (800 + 600); \n" // Blue component based on X and Y position
-"    pixel.w = 255; \n" // Alpha component
-"    write_imageui(texture, pos, pixel); \n"
+"    uint4 color; \n"
+"    color.x = pos.x * 255 / 800; \n" // Red component based on X position
+"    color.y = pos.y * 255 / 600; \n" // Green component based on Y position
+"    color.z = (pos.x + pos.y) * 255 / (800 + 600); \n" // Blue component based on X and Y position
+"    color.w = 255; \n" // Alpha component
+"    write_imageui(texture, pos, color); \n"
 "}";
 
 int main() {
@@ -61,8 +60,6 @@ int main() {
     clGetPlatformIDs(1, &platform, NULL);
     clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 1, &device, NULL);
 
-
-    /*
     // Create shared context between OpenGL and OpenCL
     cl_context_properties props[] = {
         CL_GL_CONTEXT_KHR, (cl_context_properties)glfwGetWGLContext(window),
@@ -71,28 +68,13 @@ int main() {
         0
     };
     context = clCreateContext(props, 1, &device, NULL, NULL, NULL);
-    */
-
-    HDC hDC = wglGetCurrentDC();
-    HGLRC hGLRC = wglGetCurrentContext();
-
-    cl_context_properties ctx_props[] = {
-    CL_CONTEXT_PLATFORM, (cl_context_properties)platform, // Platform obtained from clGetPlatformIDs
-    CL_GL_CONTEXT_KHR, (cl_context_properties)hGLRC,
-    CL_WGL_HDC_KHR, (cl_context_properties)hDC,
-    CL_CONTEXT_INTEROP_USER_SYNC, CL_TRUE,
-    0
-    };
-    //cl_int error;
-    context = clCreateContext(ctx_props, 1, &device, NULL, NULL, NULL);
-    
     queue = clCreateCommandQueue(context, device, 0, NULL);
 
     program = clCreateProgramWithSource(context, 1, (const char**)&kernelSource, NULL, NULL);
     clBuildProgram(program, 1, &device, NULL, NULL, NULL);
-    kernel = clCreateKernel(program, "generateRandomTexture", NULL);
+    kernel = clCreateKernel(program, "generateColors", NULL);
 
-    // Create OpenGL texture objects
+    // Create OpenGL texture object
     GLuint texture;
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);
@@ -118,6 +100,38 @@ int main() {
     clReleaseProgram(program);
     clReleaseCommandQueue(queue);
     clReleaseContext(context);
+
+    // Set up OpenGL shaders
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+    const char* vertexShaderSource = "#version 330 core\n"
+        "layout (location = 0) in vec3 aPos;\n"
+        "void main()\n"
+        "{\n"
+        "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+        "}\0";
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
+    glCompileShader(vertexShader);
+
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    const char* fragmentShaderSource = "#version 330 core\n"
+        "uniform sampler2D textureSampler;\n"
+        "out vec4 FragColor;\n"
+        "void main()\n"
+        "{\n"
+        "   FragColor = texture(textureSampler, gl_FragCoord.xy / vec2(800, 600));\n"
+        "}\n\0";
+    glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+    glCompileShader(fragmentShader);
+
+    // Link shaders
+    GLuint shaderProgram = glCreateProgram();
+    glAttachShader(shaderProgram, vertexShader);
+    glAttachShader(shaderProgram, fragmentShader);
+    glLinkProgram(shaderProgram);
+    glUseProgram(shaderProgram);
+
+    // Set texture sampler uniform
+    glUniform1i(glGetUniformLocation(shaderProgram, "textureSampler"), 0);
 
     // Main loop
     while (!glfwWindowShouldClose(window)) {
